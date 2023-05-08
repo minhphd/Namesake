@@ -1,9 +1,9 @@
-![GitHub top language](https://img.shields.io/github/languages/top/nalmadi/Namesake?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues-raw/nalmadi/Namesake?style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/nalmadi/Namesake?style=for-the-badge)
-![GitHub last commit](https://img.shields.io/github/last-commit/nalmadi/Namesake?style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/minhphd/Namesake-Scoped?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/minhphd/Namesake-Scoped?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/minhphd/Namesake-Scoped?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/minhphd/Namesake-Scoped?style=for-the-badge)
 
-# ⚠️ Namesake 
+# Namesake - Scoped
 ## _A Checker of Lexical Similarity in Identifier Names_
 
 
