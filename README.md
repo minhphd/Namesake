@@ -60,7 +60,7 @@ In our checker, we get list method names and variable names from a python file a
 
 </div>
   
-## <p align='center'> Variable naming criterias </p>
+## <p align='center'> Method naming criterias </p>
 <div align="center">
   
 |Criteria| Describtion |

@@ -304,6 +304,8 @@ def analyze_and_print(identifiers_lines, parent):
     semantic_similarity = get_all_semantic_similarities(split_identifiers, df, x, y)
     
     print(f'\nFOR THE SCOPE OF `{parent.value}` from line {parent.lines}')
+    
+    # change threshold here
     orthographic_count = print_orthographic_warnings(orthographic_similarity, identifiers_lines, 0.45)
     phonological_count = print_phonological_warnings(phonological_similarity, identifiers_lines, 0.8)
     semantic_count = print_semantic_warnings(semantic_similarity, identifiers_lines, 0.9)
