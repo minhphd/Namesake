@@ -80,13 +80,21 @@ To use Namesake-Scoped, you can follow these steps:
 
 1. Clone the Namesake-Scoped repository using git clone https://github.com/minhphd/Namesake-Scoped.git
 2. Navigate to the directory where Namesake-Scoped is cloned using 
+
 `cd Namesake-Scoped`
+
 3. Install any necessary dependencies using 
+
 `pip install -r requirements.txt`
+
 4. Run Namesake-Scoped using the command 
+
 `python3.9 namesake_with_scope.py [path to your code file]`. 
+
 The threshold for orthographic, phonological, and semantic warnings are set at .45, .8, and .9 respectively. Thresholds can be changed manually through editing line 309, 310, and 311 in the namesake_with_scope.py file.
+
 5. To check for identifiers naming quality, run 
+
 `python3.9 identifiers_quality_checkers.py [path to your code file]`
 
 ## 👀 Example Running Namesake-Scoped:
