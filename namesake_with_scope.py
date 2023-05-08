@@ -1,8 +1,8 @@
 '''
 Project Namesake: a Python tool for detecting lexical similarity in identifier names
 
-Author: Naser Al Madi (nsalmadi@colby.edu)
-Last Modified: August 26, 2022 
+Author: Naser Al Madi (nsalmadi@colby.edu), Minh Pham Dinh (mhpham26@colby.edu)
+Last Modified: May 8, 2023
 
 Paper Citation: 
 Naser Al Madi. 2022. Namesake: A Checker of Lexical Similarity in Identifier Names. 
@@ -19,6 +19,7 @@ from fuzzywuzzy import fuzz
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import nltk
+from IdentifiersTree import Tree
 nltk.download('wordnet')
 from nltk.corpus import wordnet
 
@@ -211,7 +212,7 @@ def print_orthographic_warnings(orthographic_similarity, identifiers_lines, thre
 
     count = 0
 
-    print("\northographic similarity:")
+    print("- orthographic similarity:")
 
     for item in orthographic_similarity:
         if item[0] > threshold:
@@ -230,7 +231,7 @@ def print_phonological_warnings(phonological_similarity, identifiers_lines, thre
 
     count = 0
 
-    print("\nphonological similarity:")
+    print("\n- phonological similarity:")
 
     for item in phonological_similarity:
         if item[0] > threshold:
@@ -250,7 +251,7 @@ def print_semantic_warnings(semantic_similarity, identifiers_lines, threshold):
 
     count = 0
 
-    print("\nsemantic similarity:")
+    print("\n- semantic similarity:")
 
     for item in semantic_similarity:
         if item[0] > threshold:
@@ -273,39 +274,7 @@ def print_semantic_warnings(semantic_similarity, identifiers_lines, threshold):
 
     return count
 
-
-def main():
-    # check if the number of arguments is correct
-    if len(sys.argv) != 2:
-        print("Usage: python3 {} <target_file>".format(sys.argv[0]))
-        sys.exit(1)
-
-    # open a file passed by the command line
-    file = open(sys.argv[1])
-    code = file.read()
-
-    # get the abstract syntax tree of the file
-    ast_tree = ast.parse(code)
-
-    # get a list of all identifiers in the ast tree
-    identifiers_lines = []
-    for node in ast.walk(ast_tree):
-        if isinstance(node, ast.Name):
-            identifiers_lines.append((node.id, node.lineno))
-
-    unique_identifiers = []
-
-    # remove duplicates from identifiers_lines
-    for i in range(len(identifiers_lines)):
-        if identifiers_lines[i][0] not in unique_identifiers:
-            unique_identifiers.append(identifiers_lines[i][0])
-
-    split_identifiers = []
-
-    # split compound identifiers 
-    for s in unique_identifiers:
-        split_identifiers.append(ronin.split(s))
-
+def analyze_and_print(identifiers_lines, parent):
     lexicon = {}
     # set up a dictionary to store the orthographic similarity
     with open('letter_lexicon.pickle', 'rb') as handle:
@@ -317,7 +286,14 @@ def main():
     # transposting the dataframe
     x = df.T.values
     y = df.columns.tolist()
+    
+    unique_identifiers = [identifier[0] for identifier in identifiers_lines]
+    split_identifiers = []
 
+    # split compound identifiers 
+    for s in unique_identifiers:
+        split_identifiers.append(ronin.split(s))
+    
     # compare orthographic similarity of identifiers
     orthographic_similarity = get_all_orthographic_similarities(unique_identifiers, lexicon)
 
@@ -326,19 +302,55 @@ def main():
 
     # compare semantic similarity of identifiers
     semantic_similarity = get_all_semantic_similarities(split_identifiers, df, x, y)
-
-    # if any similarity is greater than threshold, print warning message
-    print()
+    
+    print(f'\nFOR THE SCOPE OF `{parent.value}` from line {parent.lines}')
     orthographic_count = print_orthographic_warnings(orthographic_similarity, identifiers_lines, 0.45)
     phonological_count = print_phonological_warnings(phonological_similarity, identifiers_lines, 0.8)
     semantic_count = print_semantic_warnings(semantic_similarity, identifiers_lines, 0.9)
-    
     print("\nProcessing", 
-        len(identifiers_lines), 
-        "identifiers, there are",
-        orthographic_count + phonological_count + semantic_count, 
-        "warnings.")
+    len(identifiers_lines), 
+    "identifiers, there are",
+    orthographic_count + phonological_count + semantic_count, 
+    "warnings.\n")
 
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python3 {} <target_file>".format(sys.argv[0]))
+        sys.exit(1)
 
+    # open a file passed by the command line
+    file = open(sys.argv[1])
+    code = file.read()
+    class MyVisitor(ast.NodeVisitor):
+        def __init__(self):
+            self.tree = Tree()
+            self.parent_stack = ['main']
+
+        def visit_FunctionDef(self, node):
+            self.parent_stack.append(node.name)
+            self.tree.add_node(node.name, self.parent_stack[-2], node.lineno, 'function')
+            self.generic_visit(node)
+            self.parent_stack.pop()
+
+        def visit_Assign(self, node):
+            target = node.targets[0]
+            if isinstance(target, ast.Name):
+                self.tree.add_node(target.id, self.parent_stack[-1], node.lineno, 'variable')
+            self.generic_visit(node)
+            
+        def get_identifiers_tree(self):
+            return self.tree
+            
+        def __str__(self):
+            return self.tree.__str__()
+
+    tree = ast.parse(code)
+
+    # create the visitor instance and visit the tree
+    visitor = MyVisitor()
+    visitor.visit(tree)
+    myIdentifiersTree = visitor.get_identifiers_tree()
+    myIdentifiersTree.traverse_layers(analyze_and_print)
+    
 if __name__ == '__main__':
     main()
