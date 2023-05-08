@@ -79,10 +79,15 @@ In our checker, we get list method names and variable names from a python file a
 To use Namesake-Scoped, you can follow these steps:
 
 1. Clone the Namesake-Scoped repository using git clone https://github.com/minhphd/Namesake-Scoped.git
-2. Navigate to the directory where Namesake-Scoped is cloned using `cd Namesake-Scoped`
-3. Install any necessary dependencies using `pip install -r requirements.txt`
-4. Run Namesake-Scoped using the command `python3.9 namesake_with_scope.py [path to your code file]`. The threshold for orthographic, phonological, and semantic warnings are set at .45, .8, and .9 respectively. Thresholds can be changed manually through editing line 309, 310, and 311 in the namesake_with_scope.py file.
-5. To check for identifiers naming quality, run `python3.9 identifiers_quality_checkers.py [path to your code file]`
+2. Navigate to the directory where Namesake-Scoped is cloned using 
+`cd Namesake-Scoped`
+3. Install any necessary dependencies using 
+`pip install -r requirements.txt`
+4. Run Namesake-Scoped using the command 
+`python3.9 namesake_with_scope.py [path to your code file]`. 
+The threshold for orthographic, phonological, and semantic warnings are set at .45, .8, and .9 respectively. Thresholds can be changed manually through editing line 309, 310, and 311 in the namesake_with_scope.py file.
+5. To check for identifiers naming quality, run 
+`python3.9 identifiers_quality_checkers.py [path to your code file]`
 
 ## 👀 Example Running Namesake-Scoped:
 <p align="center">
@@ -100,7 +105,7 @@ To use Namesake-Scoped, you can follow these steps:
 Names. In Proceedings of The 37th IEEE/ACM International Conference on
 Automated Software Engineering Workshops (ASEW 2022).](https://www.researchgate.net/publication/363207604_Namesake_A_Checker_of_Lexical_Similarity_in_Identifier_Names)
 
-[R. S. Alsuhaibani, C. D. Newman, M. J. Decker, M. L. Collard and J. I. Maletic, "An Approach to Automatically Assess Method Names," 2022 IEEE/ACM 30th International Conference on Program Comprehension (ICPC), Pittsburgh, PA, USA, 2022, pp. 202-213, doi: 10.1145/3524610.3527780.](https://ieeexplore.ieee.org/document/9796230)
+[R. S. Alsuhaibani, C. D. Newman, M. J. Decker, M. L. Collard and J. I. Maletic, "An Approach to Automatically Assess Method Names," 2022 IEEE/ACM 30th International Conference on Program Comprehension (ICPC 2022).](https://ieeexplore.ieee.org/document/9796230)
 
 
 ## ⚖️ License:
